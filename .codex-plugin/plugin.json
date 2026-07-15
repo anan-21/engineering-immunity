@@ -1,0 +1,39 @@
+{
+  "name": "engineering-immunity",
+  "version": "0.1.0",
+  "description": "Prevent recurring bugs with staged Git verification and project-isolated engineering memory.",
+  "author": {
+    "name": "anan-21",
+    "url": "https://github.com/anan-21"
+  },
+  "homepage": "https://github.com/anan-21/engineering-immunity",
+  "repository": "https://github.com/anan-21/engineering-immunity",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "ai-development",
+    "git-workflow",
+    "regression-testing",
+    "bug-prevention"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Engineering Immunity",
+    "shortDescription": "Prevent recurring bugs with staged verification",
+    "longDescription": "Develop, integrate, and release AI-assisted changes through explicit Git gates while keeping project bug memory isolated and promoting only verified cross-project prevention rules.",
+    "developerName": "anan-21",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/anan-21/engineering-immunity",
+    "defaultPrompt": [
+      "Initialize this project with Engineering Immunity",
+      "Develop and test this feature with Engineering Immunity",
+      "Fix this recurring bug and build project immunity"
+    ],
+    "brandColor": "#12715B",
+    "screenshots": []
+  }
+}

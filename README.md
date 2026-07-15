@@ -1,62 +1,50 @@
 # Engineering Immunity / 工程免疫
 
-Engineering Immunity is a reusable workflow skill for AI-assisted development. It combines staged Git protection, project-isolated bug memory, regression testing, and verified cross-project prevention rules.
+[![Validate](https://github.com/anan-21/engineering-immunity/actions/workflows/validate.yml/badge.svg)](https://github.com/anan-21/engineering-immunity/actions/workflows/validate.yml)
+[![GitHub release](https://img.shields.io/github/v/release/anan-21/engineering-immunity)](https://github.com/anan-21/engineering-immunity/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-12715B.svg)](LICENSE)
 
-工程免疫是一套面向 AI 辅助开发的工作流 Skill。它把分阶段 Git 防护、项目独立 Bug 记忆、回归测试和跨项目通用预防规则组合成一条持续迭代流程。
+Make every verified bug fix reduce the chance of the next regression.
 
-## Core workflow / 核心流程
+让每一次经过验证的 Bug 修复，都降低下一次回归的概率。
 
-```text
-feat/* development
-  -> feature + affected regression tests
-  -> develop integration and acceptance
-  -> main stable release
-```
+Engineering Immunity is a bilingual [Agent Skill](https://agentskills.io) for reliable AI-assisted development. It combines complete-project feature development, staged Git promotion, regression testing, project-isolated bug memory, and carefully promoted cross-project prevention rules.
 
-- Develop each feature in an isolated `feat/*` branch, but run and integrate it inside the complete project.
-- Promote only verified work to `develop` for multi-feature integration and end-to-end acceptance.
-- Promote accepted work to `main` for stable release.
-- Fix test-environment defects through `fix/*`; fix production defects through `hotfix/*`.
-- Reproduce bugs, identify root causes, add regression tests, and record prevention rules.
+## Install
 
-## Two-level immunity / 两级免疫
-
-```text
-Current project: <project-root>/RULES-BUGS.md
-Current user:    ~/.engineering-immunity/GLOBAL-IMMUNITY.md
-```
-
-`RULES-BUGS.md` belongs only to the current project. It must never be mixed with another project's bug history.
-
-`GLOBAL-IMMUNITY.md` stores only verified cross-project engineering rules. A rule may be promoted when the same root cause appears in at least two independent projects, or when it is clearly established as a general language, framework, Git, runtime, or testing issue. The agent must notify the user before promotion.
-
-Set `ENGINEERING_IMMUNITY_HOME` to override the default user-level directory.
-
-## Install / 安装
-
-### Claude Code
+Install interactively to any agent detected on your machine:
 
 ```bash
-git clone https://github.com/anan-21/engineering-immunity.git \
-  ~/.claude/skills/engineering-immunity
+npx skills add anan-21/engineering-immunity
 ```
 
-Restart Claude Code, then use `/engineering-immunity` or a natural-language prompt.
-
-### Codex
+Install globally to selected agents:
 
 ```bash
-git clone https://github.com/anan-21/engineering-immunity.git \
-  ~/.codex/skills/engineering-immunity
+npx skills add anan-21/engineering-immunity \
+  --skill engineering-immunity \
+  --global \
+  --agent claude-code codex cursor opencode hermes-agent
 ```
 
-Restart Codex so it can discover the new skill.
+The open `skills` CLI supports Claude Code, Codex, Cursor, OpenCode, Hermes Agent, and many other Agent Skills-compatible tools. Installation paths and automatic invocation still depend on each agent.
 
-### Other agents
+### Claude Code plugin
 
-Install this repository in the agent's supported Skills directory if it recognizes the `SKILL.md` format. If the agent does not support Skills, point its project instructions to `SKILL.md`; natural-language use remains possible, but automatic triggering depends on the agent.
+```text
+/plugin marketplace add anan-21/engineering-immunity
+/plugin install engineering-immunity@engineering-immunity
+```
 
-## Usage / 使用
+### Use without installing
+
+```bash
+npx skills use anan-21/engineering-immunity \
+  --skill engineering-immunity \
+  --agent claude-code
+```
+
+## Use it
 
 Chinese:
 
@@ -73,24 +61,121 @@ English:
 
 ```text
 Use Engineering Immunity to initialize this project.
-Use Engineering Immunity to start the user-login feature.
+Use Engineering Immunity to develop the user-login feature.
 Use Engineering Immunity to test this feature and promote it only if it passes.
 Use Engineering Immunity to fix this bug, add a regression test, and record the prevention rule.
 Use Engineering Immunity to release this feature.
 We're stuck. Follow the Engineering Immunity circuit-breaker process.
 ```
 
-## Project rule files / 项目规则文件
-
-Engineering Immunity expects these files in each project root and creates missing ones when initializing a project:
+## How it works
 
 ```text
-RULES-TECH.md
-RULES-UI.md
-RULES-FEATURES.md
-RULES-API.md
-RULES-DB.md
-RULES-BUGS.md
+feat/*
+  |  complete-project development
+  |  feature + affected regression tests
+  v
+develop
+  |  multi-feature integration
+  |  test-environment + end-to-end acceptance
+  v
+main
+  |  tagged stable release
+  v
+production
 ```
 
-The project files stay with the project. The global immunity file stays with the user. The installed Skill remains reusable and should not contain project-specific bug records.
+Feature branches isolate changes, not modules. A feature must run inside the complete project and include every necessary frontend, backend, API, database, configuration, and test change.
+
+| Stage | Purpose | Required evidence |
+|---|---|---|
+| `feat/*` | Develop one deliverable feature | Feature tests, affected regression tests, build and migration checks |
+| `develop` | Integrate completed features | Integration tests, real test-environment behavior, end-to-end acceptance |
+| `main` | Preserve releasable code | Accepted integration state, release checks, rollback target |
+| `fix/*` | Repair integration defects | Reproduced failure plus regression proof |
+| `hotfix/*` | Repair production defects | Narrow fix, broad regression checks, patch release, back-propagation to `develop` |
+
+Engineering Immunity never grants an agent permission to merge, push, tag, deploy, discard work, or rewrite history. Those actions still require user authorization.
+
+## Two-level immunity
+
+```text
+Project memory: <project-root>/RULES-BUGS.md
+User memory:    ~/.engineering-immunity/GLOBAL-IMMUNITY.md
+```
+
+Project memory never crosses repository boundaries. Switching projects discards the previous project's Bug context and loads the new project's rules.
+
+A prevention rule enters the user-level global store only when:
+
+- the same root cause is verified in at least two independent projects; or
+- authoritative language, framework, runtime, Git, or testing behavior proves it is cross-project.
+
+Before promotion, the agent shows the user the proposed title, scope, evidence, and prevention rule. Business rules, project paths, credentials, product preferences, and unverified guesses must remain out of global memory.
+
+Override the user-level storage location when needed:
+
+```bash
+export ENGINEERING_IMMUNITY_HOME="$HOME/my-engineering-immunity"
+```
+
+## Project rules
+
+The initializer creates only missing files and never overwrites existing project knowledge:
+
+```text
+RULES-TECH.md       Technology, architecture, environment, and quality gates
+RULES-UI.md         Design system, interaction states, and accessibility
+RULES-FEATURES.md   Scope, dependencies, acceptance criteria, and test needs
+RULES-API.md        Contracts, errors, compatibility, and authentication
+RULES-DB.md         Schema, migrations, indexing, backup, and recovery
+RULES-BUGS.md       Reproduction, root cause, regression test, and prevention rule
+```
+
+Run the deterministic helpers directly when needed:
+
+```bash
+skills/engineering-immunity/scripts/init-project.sh /path/to/project
+skills/engineering-immunity/scripts/validate-project.sh /path/to/project
+skills/engineering-immunity/scripts/validate-project.sh --release /path/to/project
+```
+
+## Circuit breaker
+
+The agent stops adding patches when the same task fails three times, fixes oscillate between two regressions, patches create patch-dependent bugs, or the user reports the same failed behavior twice.
+
+It preserves the current state, reports the evidence, and narrows the next action to root-cause comparison, a smaller falsifiable experiment, or a known-good rollback. Rollback is a recovery tool, not a substitute for diagnosis.
+
+## Repository structure
+
+```text
+skills/engineering-immunity/
+  SKILL.md
+  agents/openai.yaml
+  references/
+  scripts/
+  assets/templates/
+.claude-plugin/
+.codex-plugin/
+tests/
+.github/workflows/validate.yml
+```
+
+## Development
+
+```bash
+sh tests/validate-package.sh
+sh tests/run.sh
+```
+
+The test suite verifies project isolation, no-overwrite initialization, custom user-level storage, and validation failure behavior.
+
+## Update
+
+```bash
+npx skills update engineering-immunity --global
+```
+
+## License
+
+[MIT](LICENSE)

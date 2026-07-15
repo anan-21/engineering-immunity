@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Immunity"
+  short_description: "Prevent recurring bugs with staged verification"
+  default_prompt: "Use $engineering-immunity to develop, test, and release this change without repeating known bugs."

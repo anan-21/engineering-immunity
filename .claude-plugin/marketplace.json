@@ -1,0 +1,26 @@
+{
+  "name": "engineering-immunity",
+  "description": "Reliable AI-assisted development workflows that turn verified bug fixes into reusable prevention rules.",
+  "owner": {
+    "name": "anan-21"
+  },
+  "plugins": [
+    {
+      "name": "engineering-immunity",
+      "source": "./",
+      "description": "Prevent recurring bugs with staged Git verification and project-isolated engineering memory.",
+      "author": {
+        "name": "anan-21"
+      },
+      "repository": "https://github.com/anan-21/engineering-immunity",
+      "license": "MIT",
+      "keywords": [
+        "agent-skills",
+        "ai-development",
+        "git-workflow",
+        "regression-testing",
+        "bug-prevention"
+      ]
+    }
+  ]
+}
