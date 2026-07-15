@@ -12,22 +12,36 @@ Engineering Immunity is a bilingual [Agent Skill](https://agentskills.io) for re
 
 ## Install
 
-Install interactively to any agent detected on your machine:
+Install globally and choose from the agents detected on your machine:
 
 ```bash
-npx skills add anan-21/engineering-immunity
+npx skills@1.5.17 add anan-21/engineering-immunity \
+  --skill engineering-immunity \
+  --global
 ```
 
-Install globally to selected agents:
+If multi-agent selection does not write every target in your environment, install each agent separately:
 
 ```bash
-npx skills add anan-21/engineering-immunity \
+npx skills@1.5.17 add anan-21/engineering-immunity \
   --skill engineering-immunity \
   --global \
-  --agent claude-code codex cursor opencode hermes-agent
+  --agent codex
+
+npx skills@1.5.17 add anan-21/engineering-immunity \
+  --skill engineering-immunity \
+  --global \
+  --agent claude-code
+
+npx skills@1.5.17 add anan-21/engineering-immunity \
+  --skill engineering-immunity \
+  --global \
+  --agent hermes-agent
 ```
 
 The open `skills` CLI supports Claude Code, Codex, Cursor, OpenCode, Hermes Agent, and many other Agent Skills-compatible tools. Installation paths and automatic invocation still depend on each agent.
+
+Start a new agent session after installation. Existing conversations normally do not refresh their Skill catalog.
 
 ### Claude Code plugin
 
@@ -45,6 +59,14 @@ npx skills use anan-21/engineering-immunity \
 ```
 
 ## Use it
+
+Explicit invocation is the most reliable first test:
+
+```text
+Use $engineering-immunity to initialize this project.
+```
+
+After the agent recognizes it, natural-language triggering works too.
 
 Chinese:
 
@@ -175,6 +197,22 @@ The test suite verifies project isolation, no-overwrite initialization, custom u
 ```bash
 npx skills update engineering-immunity --global
 ```
+
+If you maintain one shared Git checkout and link multiple agents to it, update that checkout instead. Every linked agent will use the same revision after starting a new session:
+
+```bash
+git -C ~/.local/share/engineering-immunity/repository pull
+```
+
+## Troubleshooting
+
+List globally installed skills:
+
+```bash
+npx skills@1.5.17 list --global
+```
+
+An Agent Skill installation is structurally valid only when the agent's installed `engineering-immunity` directory exposes `SKILL.md` at its root. Do not place the full source repository directly at that destination; install or link `skills/engineering-immunity/` instead.
 
 ## License
 
